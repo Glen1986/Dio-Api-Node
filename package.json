@@ -1,12 +1,19 @@
 {
   "name": "autentik",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "start":"node ./src/index.js",
-    "test":"echo/ error"
+    "build": "tsc -p .",
+    "start": "node ./",
+    "test": "echo/ error"
   },
   "repository": "git@github.com:Glen1986/Dio-Api-Node.git",
   "author": "Glen112 <escobar.glen@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@types/node": "^18.6.3"
+  }
 }
