@@ -6,7 +6,7 @@ class UserRepository {
 
   async findAllUsers(): Promise<User[]> {
     const query = `
-    SELECT uuid, username 
+    SELECT uuid, username i 
     FROM application_user
     `;
 
@@ -34,7 +34,7 @@ class UserRepository {
       console.log(e);
       throw new DatabaseError('Error en la consulta por ID', e);
     }
-  }
+}
 
   async create(user: User): Promise<string>{
     const script = `

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction, Router} from "express";
 import {ReasonPhrases, StatusCodes} from 'http-status-codes';
-import {DatabaseError} from "pg";
 import userRepository from "../repositories/user.repository";
 
 const usersRoute = Router();
@@ -20,11 +19,7 @@ usersRoute.get('/users/:uuid', async (req: Request<{uuid: string}>, res: Respons
    
   } catch (e) {
     /* handle error */
-     if(e instanceof DatabaseError){
-       res.sendStatus(StatusCodes.BAD_REQUEST)
-     } else{
-      res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR)
-     }
+    next(e);
   }
 });
 
