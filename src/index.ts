@@ -1,9 +1,11 @@
 // import express, { Request, Response, NextFunction } from "express";
 import express from 'express'
-import errorHandler from './milddewares/error-handler.middleware';
+import bearerAuthenticationMiddleware from './milddewares/bearer-authentication.middleware';
 import authorizationRoute from './routes/authorization.route';
 import statusRoute from './routes/status.route';
 import usersRoute from './routes/users.route';
+
+import errorHandler from './milddewares/error-handler.middleware';
 
 const app = express();
 
@@ -11,12 +13,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-//routes config
+{/*routes config*/}
 app.use(statusRoute);
-app.use(usersRoute);
+app.use(bearerAuthenticationMiddleware, usersRoute);
 app.use(authorizationRoute);
 
-//error config
+{/*error config*/}
 app.use(errorHandler);
 
 app.listen(3000, ()=> {
