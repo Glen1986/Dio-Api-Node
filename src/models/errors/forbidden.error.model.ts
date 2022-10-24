@@ -1,4 +1,4 @@
-export default class ForbiddenError extends Error {
+export default class ForbidemError extends Error {
   constructor(
    public message: string,
    public error?: any,
