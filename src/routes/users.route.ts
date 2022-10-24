@@ -17,19 +17,13 @@ usersRoute.get('/users/:uuid', async (req: Request<{uuid: string}>, res: Respons
       console.log(req.headers['authorization']);
 
     const uuid = req.params.uuid;
-    const user = await userRepository.findById(uuid);
+    const user = await userRepository.findUserById(uuid);
     res.status(StatusCodes.OK).send(user).send(ReasonPhrases.OK)
    
   } catch (e) {
     /* handle error */
     next(e);
   }
-});
-
-usersRoute.post('/users', async (req: Request, res: Response, next: NextFunction) => {
-  const newUser = req.body;
-  const uuid = await userRepository.create(newUser);
-  res.status(StatusCodes.CREATED).send(uuid).send(ReasonPhrases.OK)
 });
 
 usersRoute.put('/users/:uuid', async (req: Request<{uuid: string}>, res: Response, next:NextFunction) => {
