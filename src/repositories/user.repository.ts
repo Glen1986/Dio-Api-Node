@@ -4,7 +4,6 @@ import DatabaseError from "../models/errors/database.error.model";
 
 
 class UserRepository {
-
   async findAllUsers(): Promise<User[]> {
     const query = ` 
     SELECT uuid, 
@@ -28,7 +27,7 @@ class UserRepository {
     const values = [uuid]
     const {rows} = await db.query<User>(query, values);
     const [user] = rows;
-    return user;  
+    return [user];  
     } catch (e) {
       /* handle error */
       console.log(e)
@@ -52,7 +51,7 @@ class UserRepository {
     return newUser.uuid
   }
 
-  async update(user: User):Promise<string> {
+  async update(user: User): Promise<string> {
     const script = `
     UPDATE application_user
     SET
@@ -63,6 +62,24 @@ class UserRepository {
     const values = [user.username, user.password, user.uuid];
     await db.query(script, values);
   };
+  
+  async findByUsernameAndPassword(username: string, password: string ): Promise<User | null> {
+   try {
+    const query = `
+    SELECT uuid, username 
+    FROM application_user
+    WHERE username = $1
+    AND password = crypt($2,'my_salt')
+    `;
+    const values = [username, password];
+    const {rows} = await db.query<User>(query, values)
+    const [user] = rows;
+    return user || null;
+   } catch (e) {
+     /* handle error */
+     throw new DatabaseError('nombre de usuario o password no encontrados', e)
+   } 
+  }
   async remove(uuid: string): Promise<void> {
     const script = `
     DELETE FROM
@@ -72,7 +89,8 @@ class UserRepository {
     const values = [uuid];
   await db.query(script, values)
   }
-  
+ 
+ 
 }
 
 export default new UserRepository();
