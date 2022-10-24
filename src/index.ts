@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction, urlencoded } from "express";
 import usersRoute from "./routes/users.route";
 import statusRoute from "./routes/status.route"
 import errorHandler from "./middlewares/error-Handler.middleware";
+import authorizationRouter from "./routes/authorization.route";
 
 const app = express();
 
@@ -12,9 +13,11 @@ app.use(urlencoded({extended: true}));
 //rutas de nuestra App
 app.use(usersRoute);
 app.use(statusRoute)
+app.use(authorizationRouter)
 
 //error handler
 app.use(errorHandler)
+
 
 
 
