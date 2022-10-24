@@ -19,12 +19,10 @@ usersRoute.get('/users', async (req: Request, res: Response, next: NextFunction)
 
 usersRoute.get('/users/:uuid', async (req: Request<{uuid: string}>, res: Response, next: NextFunction) => {
   try {
-      console.log(req.headers['authorization']);
-
+    console.log(req.headers['authorization']);
     const uuid = req.params.uuid;
     const user = await userRepository.findUserById(uuid);
     res.status(StatusCodes.OK).send(user).send(ReasonPhrases.OK)
-   
   } catch (e) {
     /* handle error */
     next(e);
@@ -32,18 +30,29 @@ usersRoute.get('/users/:uuid', async (req: Request<{uuid: string}>, res: Respons
 });
 
 usersRoute.put('/users/:uuid', async (req: Request<{uuid: string}>, res: Response, next:NextFunction) => {
+  try {
   const uuid = req.params.uuid;
   const modifiedUser = req.body;
   modifiedUser.uuid = uuid
   await userRepository.update(modifiedUser)
-  res.status(StatusCodes.OK).send(uuid).send(ReasonPhrases.OK)
+  res.status(StatusCodes.OK).send(uuid).send(ReasonPhrases.OK) 
+  } catch (e) {
+    /* handle error */
+    next(e)
+  }
 });
 
-usersRoute.delete('/users/:uuid', async (req:Request<{uuid: string}>, res:Response, net: NextFunction)=>{
+usersRoute.delete('/users/:uuid', async (req:Request<{uuid: string}>, res:Response, next: NextFunction)=>{
+  try {
   const uuid = req.params.uuid;
   await userRepository.remove(uuid);
   // res.sendStatus(StatusCodes.OK);
-  res.status(StatusCodes.OK).send().send(ReasonPhrases.OK)
+  res.status(StatusCodes.OK).send().send(ReasonPhrases.OK)  
+  } catch (e) {
+    /* handle error */
+    next(e)
+  }
+  
 })
 
 export default usersRoute;
