@@ -23,8 +23,7 @@ authorizationRoute.post('/token', async (req: Request, res:  Response, next: Nex
     if(!username || !password){
       throw new ForbiddenError('no credentials')
     }
-//
-    // console.log(username, password)
+
     const user = await userRepository.findByUsernameAndPassword(username, password)
     console.log(user)
     
