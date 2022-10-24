@@ -1,7 +1,7 @@
 // import express, { Request, Response, NextFunction } from "express";
 import express from 'express'
-import bearerAuthenticationMiddleware from './milddewares/bearer-authentication.middleware';
-import authorizationRoute from './routes/authorization.route';
+// import bearerAuthenticationMiddleware from './milddewares/bearer-authentication.middleware';
+// import authorizationRoute from './routes/authorization.route';
 import statusRoute from './routes/status.route';
 import usersRoute from './routes/users.route';
 
@@ -15,8 +15,9 @@ app.use(express.urlencoded({extended: true}));
 
 {/*routes config*/}
 app.use(statusRoute);
-app.use(bearerAuthenticationMiddleware, usersRoute);
-app.use(authorizationRoute);
+app.use(usersRoute);
+// app.use(bearerAuthenticationMiddleware, usersRoute);
+// app.use(authorizationRoute);
 
 {/*error config*/}
 app.use(errorHandler);
