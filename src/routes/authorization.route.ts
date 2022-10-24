@@ -1,9 +1,9 @@
 import {NextFunction, Request, Response, Router} from "express";
 import ForbiddenError from "../models/errors/forbidden.error.models";
 
-const authorizationRouter = Router();
+const authorizationRoute = Router();
 
-authorizationRouter.post('/token', (req: Request, res:  Response, next: NextFunction) => {
+authorizationRoute.post('/token', (req: Request, res:  Response, next: NextFunction) => {
   try {
   const authorizationHeader = req.headers['authorization']
   if(!authorizationHeader){
@@ -25,4 +25,4 @@ authorizationRouter.post('/token', (req: Request, res:  Response, next: NextFunc
     next(e)
   }
 })
-export default authorizationRouter;
+export default authorizationRoute;
