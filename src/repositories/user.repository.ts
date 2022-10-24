@@ -5,29 +5,31 @@ import DatabaseError from '../models/errors/database.error.model'
 class UserRepository {
 
   async findAllUsers(): Promise<User[]> {
+    try {
     const query = `
-    SELECT uuid, username i 
+    SELECT uuid, username  
     FROM application_user
     `;
-
     const { rows } = await db.query<User>(query);    
-    return rows || [];
-
+    return rows || [];  
+    } catch (e) {
+      /* handle error */
+      console.log(e)
+      throw new DatabaseError("error en la busqueda total");
+    }
+    
   }
 
-  async findById(uuid: string): Promise<User> {
+  async findUserById(uuid: string): Promise<User[]> {
     try {
      const query = `
     SELECT uuid, username 
     FROM application_user
     WHERE uuid = $1
     `;
-
     const values = [uuid];
-
     const { rows } = await db.query<User>(query, values);    
     const [ user ] = rows;
-
     return user;
     } catch (e) {
       /* handle error */
