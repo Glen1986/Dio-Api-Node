@@ -39,7 +39,7 @@ class UserRepository {
     
   }
 
-  async findUserById(uuid: string): Promise<User[]> {
+  async findUserById(uuid: string): Promise<User> {
     try {
      const query = `
     SELECT uuid, username 
@@ -53,7 +53,7 @@ class UserRepository {
     } catch (e) {
       /* handle error */
       console.log(e);
-      throw new DatabaseError('Error en la consulta por ID', e);
+      // throw new DatabaseError('Error en la consulta por ID', e);
     }
 }
 
