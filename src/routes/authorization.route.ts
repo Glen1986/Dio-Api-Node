@@ -14,6 +14,20 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
     if(!user){
       throw new ForbiddenError('usuario no informado')
     }
+
+
+    const user = await userRepository.findByUsernameAndPassword(username, password)
+    console.log(user)
+   /***
+     "iss" dominio de aplicaion generadora de tokken
+     "sub" asunto del token, utilizado para guardar el ID
+     "aud" define quien puede usar el token
+     "exp" fecha de expiracion del token
+     "nbf" fecha de validacion del token
+     "iat" fecha de creacion del token
+     "jti" ID de token
+   * ***/
+    
     const jwtPayload = { username: user.username };
     const jwtOptions = { subject: user?.uuid };
     const secretKey = 'my_secret_key';

@@ -51,7 +51,7 @@ class UserRepository {
     return newUser.uuid
   }
 
-  async update(user: User): Promise<string> {
+  async update(user: User): Promise<User> {
     const script = `
     UPDATE application_user
     SET
