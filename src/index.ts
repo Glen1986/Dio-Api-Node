@@ -3,6 +3,7 @@ import usersRoute from "./routes/users.route";
 import statusRoute from "./routes/status.route"
 import errorHandler from "./middlewares/error-Handler.middleware";
 import authorizationRoute from "./routes/authorization.route";
+import basicAuthenticationMiddleware from "./middlewares/basic-authentication.middleware";
 
 const app = express();
 
