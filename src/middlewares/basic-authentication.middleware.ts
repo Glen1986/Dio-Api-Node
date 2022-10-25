@@ -16,17 +16,29 @@ export default async function basicAuthenticationMiddleware ( req: Request, res:
     }
 
     const tokenContent = Buffer.from(token, 'base64').toString('utf-8')
+
     const [username, password] = tokenContent.split(':')
 
     if(!username || !password){
       throw new ForbiddenError('no credentials')
     }
-//
-    // console.log(username, password)
+
     const user = await userRepository.findByUsernameAndPassword(username, password)
     if(!user){
       throw new ForbiddenError('usuario no informado')
     }
+        if(!user){
+      throw new ForbiddenError('no user')
+        };
+        // console.log(user)
+      req.user = user;
+   next()
+  } catch (e) {
+    /* handle error */
+    next(e)
+  }
+
+}
    /***
      "iss" dominio de aplicaion generadora de tokken
      "sub" asunto del token, utilizado para guardar el ID
@@ -36,15 +48,4 @@ export default async function basicAuthenticationMiddleware ( req: Request, res:
      "iat" fecha de creacion del token
      "jti" ID de token
    * ***/
-        if(!user){
-      throw new ForbiddenError('no user')
-        };
-        console.log(user)
-      req.user = user;
-   next()
-  } catch (e) {
-    /* handle error */
-    next(e)
-  }
 
-}
