@@ -20,7 +20,7 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
 
     const jwt = JWT.sign( jwtPayload, secretKey, jwtOptions );
     res.status(StatusCodes.OK).json({ token: jwt })
-
+console.log(user)
   } catch (e) {
     /* handle error */
     next(e)
