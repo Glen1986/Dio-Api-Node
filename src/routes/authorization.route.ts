@@ -4,7 +4,6 @@ import {StatusCodes} from "http-status-codes";
 import basicAuthenticationMiddleware from "../middlewares/basic-authentication.middleware";
 import ForbiddenError from "../models/errors/forbidden.error.models";
 
-
 const authorizationRoute = Router();
 
 authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Request, res:  Response, next: NextFunction) => {
@@ -15,9 +14,19 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
       throw new ForbiddenError('usuario no informado')
     }
 
+    const jwtPayload = { username: user.username };
+    const jwtOptions = { subject: user?.uuid };
+    const secretKey = 'my_secret_key';
 
-    const user = await userRepository.findByUsernameAndPassword(username, password)
-    console.log(user)
+    const jwt = JWT.sign( jwtPayload, secretKey, jwtOptions );
+    res.status(StatusCodes.OK).json({ token: jwt })
+
+  } catch (e) {
+    /* handle error */
+    next(e)
+  }
+})
+export default authorizationRoute;
    /***
      "iss" dominio de aplicaion generadora de tokken
      "sub" asunto del token, utilizado para guardar el ID
@@ -27,17 +36,3 @@ authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Req
      "iat" fecha de creacion del token
      "jti" ID de token
    * ***/
-    
-    const jwtPayload = { username: user.username };
-    const jwtOptions = { subject: user?.uuid };
-    const secretKey = 'my_secret_key';
-    const jwt = JWT.sign( jwtPayload, secretKey, jwtOptions );
-    res.status(StatusCodes.OK).json({ token: jwt })
-
-
-  } catch (e) {
-    /* handle error */
-    next(e)
-  }
-})
-export default authorizationRoute;
