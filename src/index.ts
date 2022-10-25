@@ -3,7 +3,6 @@ import usersRoute from "./routes/users.route";
 import statusRoute from "./routes/status.route"
 import errorHandler from "./middlewares/error-Handler.middleware";
 import authorizationRoute from "./routes/authorization.route";
-import jwtAuthenticationMiddleware from "./middlewares/jwt.authenticaton.middleware";
 
 const app = express();
 
@@ -13,7 +12,7 @@ app.use(urlencoded({extended: true}));
 
 //rutas de nuestra App
 app.use(statusRoute)
-app.use(jwtAuthenticationMiddleware, usersRoute);
+app.use( usersRoute);
 app.use(authorizationRoute)
 
 //error handler

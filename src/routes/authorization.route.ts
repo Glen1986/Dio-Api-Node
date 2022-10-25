@@ -7,9 +7,6 @@ import jwtAuthenticationMiddleware from "../middlewares/jwt.authenticaton.middle
 
 const authorizationRoute = Router();
 
-authorizationRoute.post('/token/validate',jwtAuthenticationMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-  res.sendStatus(StatusCodes.OK)
-})
 authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Request, res:  Response, next: NextFunction) => {
   try {
     const user = req.user
@@ -29,6 +26,9 @@ console.log(user)
     /* handle error */
     next(e)
   }
+})
+authorizationRoute.post('/token/validate',jwtAuthenticationMiddleware, async (req: Request, res:  Response, next: NextFunction) => {
+  res.sendStatus(StatusCodes.OK).send()
 })
 export default authorizationRoute;
    /***

@@ -3,10 +3,11 @@ import {StatusCodes} from 'http-status-codes';
 import DatabaseError from '../models/errors/database.error.model';
 import userRepository from '../repositories/user.repository';
 import UserRepository from '../repositories/user.repository'
+import jwtAuthenticationMiddleware from '../middlewares/jwt.authenticaton.middleware';
 
 const usersRoute = Router();
 
-usersRoute.get('/users',async(req: Request, res: Response, next: NextFunction)=>{
+usersRoute.get('/users', jwtAuthenticationMiddleware,async(req: Request, res: Response, next: NextFunction)=>{
   const users = await UserRepository.findAllUsers();
   res.status(StatusCodes.OK).send(users);
 });
@@ -23,13 +24,13 @@ usersRoute.get('/users/:uuid', async (req: Request<{ uuid:string }>, res: Respon
 
 });
 
-usersRoute.post('/users', async (req: Request, res: Response, next: NextFunction)=>{
+usersRoute.post('/users', jwtAuthenticationMiddleware, async (req: Request, res: Response, next: NextFunction)=>{
   const newUser = req.body;
   const uuid = await UserRepository.create(newUser);
   res.status(StatusCodes.CREATED).send(uuid);
 })
 
-usersRoute.put('/users/:uuid', async (req: Request<{ uuid:string }>, res: Response, next: NextFunction) => {
+usersRoute.put('/users/:uuid', jwtAuthenticationMiddleware, async (req: Request<{ uuid:string }>, res: Response, next: NextFunction) => {
   const uuid = req.params.uuid;
   console.log(uuid)
   const modifiedUser = req.body;
@@ -39,7 +40,7 @@ usersRoute.put('/users/:uuid', async (req: Request<{ uuid:string }>, res: Respon
 
   res.status(StatusCodes.OK).send()
 })
-usersRoute.delete('/users/:uuid', async (req: Request<{ uuid:string }>, res: Response, next: NextFunction) => {
+usersRoute.delete('/users/:uuid', jwtAuthenticationMiddleware, async (req: Request<{ uuid:string }>, res: Response, next: NextFunction) => {
   const uuid = req.params.uuid;
   await userRepository.remove(uuid)
 res.sendStatus(StatusCodes.OK)
